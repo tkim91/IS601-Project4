@@ -56,6 +56,7 @@
                             <ul class="dropdown-menu " aria-labelledby="navbarDarkDropdownMenuLink">
                                 <li><a class="dropdown-item" href="{{ url_for("auth.edit_profile") }}">Manage Profile</a></li>
                                 <li><a class="dropdown-item" href="{{ url_for("auth.edit_account") }}">Manage Account</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for("transactions.transactions_browse") }}">Manage Transactions</a></li>
                                 <li><a class="dropdown-item" href="{{ url_for("auth.logout") }}">Logout</a></li>
                             </ul>
                         </li>
@@ -83,7 +84,7 @@
     {{ bootstrap.load_js() }}
 {% endblock %}
 <footer class="text-center mt-5">
-    Environment: {{ deployment_environment }} - Copyright: {{ year }} {{ format_price(100) }}
+    Environment: {{ deployment_environment }} - Copyright: {{ year }} tdk4
 </footer>
 </body>
 </html>

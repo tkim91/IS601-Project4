@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <article class="col-8 lh-lg fs-5">
+
+            <h1>Landing Page</h1>
+            <p>Here you have landed weary traveller. Please login or register if this is your first time here.</p>
+        </article>
+        {% if current_user.is_authenticated == false %}
+            <aside class="col-4">
+                <h2>Login</h2>
+                <form action="{{ url_for('auth.login') }}" method=post>
+                    <dl>
+                        {{ form.csrf_token }}
+                        {{ render_field(form.email) }}
+                        {{ render_field(form.password) }}
+                    </dl>
+                    <p><input type=submit value=Login>
+                </form>
+            </aside>
+        {% endif %}
+
+    </div>
+{% endblock %}
+</article>
