@@ -1,6 +1,7 @@
 version: "3.2"
 services:
   flask:
+    image: tkim911/project4
     build: .
     restart: always
     ports:
