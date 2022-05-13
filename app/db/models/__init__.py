@@ -53,7 +53,7 @@ class User(UserMixin, db.Model):
 class Transactions(db.Model):
     __tablename__ = 'transactions'
     id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Integer, nullable=True, unique=False)
+    amount = db.Column(db.Float, nullable=True, unique=False)
     type = db.Column(db.String(300), nullable=True, unique=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = relationship("User", back_populates="transactions", uselist=False)
