@@ -64,15 +64,18 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
-
-@auth.route('/dashboard')
+@auth.route('/dashboard', methods=['GET'])
 @login_required
 def dashboard():
     """ render dashboard page """
+    balance = 0.0
     userid = current_user.get_id()
-    data = Transactions.query.filter_by(user_id=userid).all()
+    for transaction in current_user.transactions:
+        balance += float(transaction.amount)
+    balance = str(balance)
+    data = current_user.transactions
     try:
-        return render_template('dashboard.html', data=data)
+        return render_template('dashboard.html', balance=balance, data=data)
     except TemplateNotFound:
         abort(404)
 

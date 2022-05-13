@@ -1,0 +1,39 @@
+"""This makes the test configuration setup"""
+# pylint: disable=redefined-outer-name
+import os
+import pytest
+from app import create_app
+from app.db import db
+
+
+@pytest.fixture()
+def application():
+    """This makes the app"""
+    os.environ['FLASK_ENV'] = 'testing'
+    application = create_app()
+    application.config.update({
+        "TESTING": True,
+        "WTF_CSRF_METHODS": [],
+        "WTF_CSRF_ENABLED": False
+    })
+    with application.app_context():
+        db.create_all()
+        yield application
+        db.session.remove()
+
+
+@pytest.fixture()
+def client(application):
+    """This makes the http client"""
+    return application.test_client()
+
+
+@pytest.fixture()
+def runner(application):
+    """This makes the task runner"""
+    return application.test_cli_runner()
+
+@pytest.fixture
+def add_user(client):
+    """Add a user for testing"""
+    client.post("register", data={"email": "test@test.com", "password": "testtest", "confirm": "testtest"})
