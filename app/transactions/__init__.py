@@ -48,25 +48,24 @@ def transactions_upload():
         # user = current_user
         list_of_transactions = []
         # calculate the balance for the user
-        balance = 0
-        with open(filepath) as file:
+        balance = 0.0
+        with open(filepath, encoding='utf-8-sig') as file:
             csv_file = csv.DictReader(file)
             for row in csv_file:
                 log.info(row['AMOUNT'])
-                balance += int(row['AMOUNT'])
+                balance += row['AMOUNT']
                 list_of_transactions.append(Transactions(row['AMOUNT'], row['TYPE']))
 
         current_user.transactions = list_of_transactions
         current_user.balance = balance
         print(current_user.balance)
+
+        db.session.commit()
         log.info(current_user.balance)
         log.info("Uploaded CSV successfully")
         log.info(filename)
-        db.session.commit()
-
-        return redirect(url_for('auth.dashboard'))
-
+        return redirect(url_for('transactions.transactions_browse'))
     try:
-        return render_template('templates/upload.html', form=form)
+        return render_template('upload.html', form=form)
     except TemplateNotFound:
         abort(404)
