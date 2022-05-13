@@ -37,3 +37,23 @@ def test_login(application, client):
         db.session.delete(user)
 
 
+def test_registration(client):
+    """Test if a user logs in that it redirects to login page"""
+    with client:
+        res = client.post('/register', data=dict(email="test@test.com", password='testtest'), follow_redirects=True)
+        print(res.data)
+        assert res.status_code == 200
+        assert b'href="/login"' in res.data
+
+
+def test_dashboard_access(client):
+    """Test dashboard access"""
+    res = client.get("/dashboard")
+    assert res.status_code == 302
+
+
+
+def test_authenticated_user(client):
+    """Test user authentication"""
+    user = User("test@test.com", "testtest")
+    assert user.is_authenticated() == True
