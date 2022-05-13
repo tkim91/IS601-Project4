@@ -36,6 +36,14 @@ def test_login(client):
 def test_dashboard_access_success(client):
     """Tests for access to the dashboard after login SUCCESS"""
     with client:
+        response = client.post("/register", data={
+            "email": "test@test.com",
+            "password": "testtest",
+            "confirm": "testtest"
+        }, follow_redirects=True)
+        assert response.status_code == 200
+        assert response.request.path == url_for('auth.login')
+
         login_response = client.post("/login", data={
             "email": "test@test.com",
             "password": "testtest",
@@ -58,7 +66,7 @@ def test_dashboard_access_denied(client):
 
         login_response = client.post("/login", data={
             "email": "test@test.com",
-            "password": "testtest",
+            "password": "test123",
         }, follow_redirects=True)
         assert login_response.request.path == url_for('auth.login')
         assert login_response.status_code == 200
